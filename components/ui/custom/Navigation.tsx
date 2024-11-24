@@ -2,7 +2,7 @@ import { Button } from "../button"
 
 const Navigation = () => {
   return (
-    <div className='h-[80px] w-full flex flex-row justify-between items-center bg-white pl-[30px] pr-[30px] border-b-[1px] border-solid'>
+    <div className='h-[80px] w-full flex flex-row justify-between items-center bg-[#e9f3f4] pl-[30px] pr-[30px] border-b-[1px] border-solid'>
       <div className='flex flex-row space-x-[40px]'>
         <div><h3 className="cursor-pointer">CRAFTY</h3></div>
         <ul className='flex flex-row space-x-[15px]'>
