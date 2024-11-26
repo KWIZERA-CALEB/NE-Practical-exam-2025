@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import Footer from '@/components/ui/custom/Footer'
 
 export default function Home() {
   return (
@@ -135,6 +136,8 @@ export default function Home() {
         </div>
 
       </div>
+
+      <Footer />
 
     </div>
 
