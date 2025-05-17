@@ -3,11 +3,13 @@ import Home from './pages/Home'
 import AllListings from './pages/AllListings'
 import SingleProduct from './pages/SingleProduct'
 import Cart from './pages/Cart'
-import MenCollection from './pages/MenCollection'
-import WomenCollection from './pages/WomenCollection'
-import KidsCollection from './pages/KidsCollection'
-import NewAndFeatured from './pages/NewAndFeatured'
 import Search from './pages/Search'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Control from './pages/Control'
+import CreateProduct from './pages/CreateProduct'
+import Orders from './pages/Orders'
+
 
 const App = () => {
   return (
@@ -18,11 +20,11 @@ const App = () => {
         <Route path='/all/:id' element={<SingleProduct />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/search' element={<Search />} />
-
-        <Route path='/men' element={<MenCollection />} />
-        <Route path='/women' element={<WomenCollection />} />
-        <Route path='/kids' element={<KidsCollection />} />
-        <Route path='/new-featuring' element={<NewAndFeatured />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/control' element={<Control />} />
+        <Route path='/create-product' element={<CreateProduct />} />
+        <Route path='/control/orders' element={<Orders />} />
       </Routes>
     </div>
   )
