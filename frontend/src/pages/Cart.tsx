@@ -34,7 +34,7 @@ const Cart = () => {
                             :  
                                 (
                                     cartItems.map((cartItem) => (
-                                        <CartProductCard key={cartItem.productID} productName={cartItem.productName} productPrice={cartItem.productPrice} productColor={cartItem.productColor} productCategory={cartItem.productCategory} />
+                                        <CartProductCard key={cartItem.productID} isUsedInCartPage={true} productName={cartItem.productName} productPrice={cartItem.productPrice} productColor={cartItem.productColor} productCategory={cartItem.productCategory} />
                                     ))
                                 )
                             }

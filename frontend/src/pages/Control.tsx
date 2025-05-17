@@ -3,11 +3,10 @@ import Navigation from "../components/Navigation"
 import ProductCard from "../components/atoms/ProductCard"
 import Select from '../components/atoms/Select'
 import Input from '../components/atoms/Input'
+import Button from '../components/atoms/Button'
+import { Link } from 'react-router-dom'
 
-const NewAndFeatured = () => {
-
-    const [productSpecifiedGender, setProductSpecifiedGender] = useState('male')
-    const [productColor, setProductColor] = useState('red')
+const Control = () => {
     const [productCategory, setProductCategory] = useState('shirts')
     const [productPrice, setProductPrice] = useState(40)
 
@@ -19,8 +18,7 @@ const NewAndFeatured = () => {
             "productPrice": 45,
             "productColor": "red",
             "productSpecifiedGender": "male",
-            "productCategory": "shirts",
-            "isFeatured": "yes"
+            "productCategory": "shirts"
         }
     ]
 
@@ -36,12 +34,9 @@ const NewAndFeatured = () => {
             maxPrice = 100;
         }
         return (
-            filteredProduct.productSpecifiedGender === productSpecifiedGender &&
-            filteredProduct.productColor === productColor &&
             filteredProduct.productCategory === productCategory &&
             filteredProduct.productPrice >= minPrice &&
-            filteredProduct.productPrice <= maxPrice &&
-            filteredProduct.isFeatured === "yes"
+            filteredProduct.productPrice <= maxPrice
         )
     })
 
@@ -49,21 +44,31 @@ const NewAndFeatured = () => {
         <div>
             <Navigation />
             <div className='pr-[40px] mt-[15px] pl-[40px]'>
-                <p>Filters</p>
+                <p>Products you created:</p>
                 <div className='flex flex-row items-center justify-between mt-[10px]'>
                     <div className='flex space-x-[10px] items-center flex-row'>
                         <Input  inputType='text' inputPlaceholder="Search" />
-                        <Select handleSelectChange={(e) => {setProductSpecifiedGender(e.target.value)}} selectOptionTerm="Sort by gender" options={['Male', 'Female']} />
                         <Select handleSelectChange={(e) => {setProductCategory(e.target.value)}} selectOptionTerm="Sort by category" options={['Pants', 'Shirts', 'Dresses', 'Coats', 'Others']} />
-                        <Select handleSelectChange={(e) => {setProductColor(e.target.value)}} selectOptionTerm="Sort by color" options={['Red', 'Blue', 'Yellow', 'Gray', 'Others']} />
                         <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {setProductPrice(parseInt(e.target.value, 10))}} className='outline-0 border-[1px] border-solid border-gray-400 pl-[20px] pt-[10px] pb-[10px] pr-[20px] rounded-full'>
                             <option className='text-[14px] font-afacadFlux' value={0}>Sort by price</option>
                             <option className='text-[14px] font-afacadFlux' value={50}>$0 - $50</option>
                             <option className='text-[14px] font-afacadFlux' value={100}>$50 - $100</option>
                         </select>
                     </div>
-                    <div>
-                        <p>{filteredProducts.length} {filteredProducts.length == 1 ? 'Product' : 'Products'}</p>
+                    <div className='flex space-x-[10px] items-center flex-row'>
+                        <div>
+                            <Link to='/create-product'>
+                                <Button buttonText='Create New Product' buttonBG='bg-black' buttonTextColor='text-white' />
+                            </Link>
+                        </div>
+                        <div>
+                            <Link to='/control/orders'>
+                                <Button buttonText='View Orders (10)' buttonBG='bg-black/[90%]' buttonTextColor='text-white' />
+                            </Link>
+                        </div>
+                        <div>
+                            <p>{filteredProducts.length} {filteredProducts.length == 1 ? 'Product' : 'Products'}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,4 +89,4 @@ const NewAndFeatured = () => {
     )
 }
 
-export default NewAndFeatured
+export default Control
