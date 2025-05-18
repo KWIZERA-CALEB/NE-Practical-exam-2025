@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import AllListings from './pages/AllListings'
@@ -9,9 +10,14 @@ import Register from './pages/Register'
 import Control from './pages/Control'
 import CreateProduct from './pages/CreateProduct'
 import Orders from './pages/Orders'
+import ProtectedRoute from './components/atoms/ProtectedRoute'
+import { useAuthStore } from './store/useAuthStore'
 
 
 const App = () => {
+  useEffect(() => {
+    useAuthStore.getState().checkAuth();
+  }, []);
   return (
     <div>
       <Routes>
@@ -22,9 +28,11 @@ const App = () => {
         <Route path='/search' element={<Search />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/control' element={<Control />} />
-        <Route path='/create-product' element={<CreateProduct />} />
-        <Route path='/control/orders' element={<Orders />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path='/control' element={<Control />} />
+          <Route path='/create-product' element={<CreateProduct />} />
+          <Route path='/control/orders' element={<Orders />} />
+        </Route>
       </Routes>
     </div>
   )

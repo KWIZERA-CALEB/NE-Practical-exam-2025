@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom'
 import { BiCart } from 'react-icons/bi'
 import { BiSearch } from 'react-icons/bi'
+import { useAuthStore } from "../store/useAuthStore"
+
 
 const Navigation = () => {
+    const { authUser } = useAuthStore()
+
+    console.log(authUser)
     return (
         <div className="h-[90px] w-full">
             <div className='bg-black w-full h-[30px] flex justify-center items-center'>
@@ -24,7 +29,11 @@ const Navigation = () => {
                             <BiCart />
                         </Link>
                     </div>
-                    <div><Link to='/login'>Login</Link></div>
+                    {authUser ? 
+                        <div><Link to='/control'>{authUser.email}</Link></div>
+                    : 
+                        <div><Link to='/login'>Login</Link></div>
+                    }
                 </div>
             </div>
         </div>
