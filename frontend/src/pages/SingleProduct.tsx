@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import Navigation from "../components/Navigation"
 import Footer from "../components/Footer"
 import Button from "../components/atoms/Button"
@@ -5,6 +6,14 @@ import ProductCard from "../components/atoms/ProductCard"
 
 
 const SingleProduct = () => {
+    const [productChoseQuantity, setProductChoseQuantity] = useState(1)
+    const [isQuantityLessThanOne, setIsQuantityLessThanOne] = useState(false)
+
+    useEffect(() => {
+        if (productChoseQuantity <= 1) {
+            setIsQuantityLessThanOne(true)
+        }
+    }, [productChoseQuantity])
 
     const products = [
         {
@@ -18,10 +27,22 @@ const SingleProduct = () => {
         }
     ]
 
+    const productPrice = 40
+
     const filteredProducts = products.filter((filteredProduct) => (
         filteredProduct.productCategory === "shirts" &&
         filteredProduct.productSpecifiedGender === "male"
     ))
+
+    const handleReduceProductQuantity = () => {
+        let newQuantity = productChoseQuantity - 1
+        setProductChoseQuantity(newQuantity)
+    }
+
+    const handleIncreaseProductQuantity = () => {
+        let newQuantity = productChoseQuantity + 1
+        setProductChoseQuantity(newQuantity)
+    }
     return (
         <div>
             <Navigation />
@@ -53,13 +74,13 @@ const SingleProduct = () => {
                         <div>
                             <p className="text-gray-600 text-[18px]">Quantity</p>
                             <div className="bg-gray-200 pr-[6px] pl-[6px] pt-[6px] pb-[6px] rounded-full w-[100px] h-[40px] flex flex-row items-center justify-between">
-                                <div className="w-[30px] h-[30px] p-[10px] flex justify-center items-center rounded-full bg-black cursor-pointer"><p className='text-white cursor-pointer'>-</p></div>
-                                <div><p>0</p></div>
-                                <div className="w-[30px] h-[30px] p-[10px] flex justify-center items-center rounded-full bg-black cursor-pointer"><p className='text-white cursor-pointer'>+</p></div>
+                                <div onClick={handleReduceProductQuantity} className={`w-[30px] select-none h-[30px] p-[10px] flex justify-center items-center ${isQuantityLessThanOne ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} rounded-full bg-black`}><p className='text-white'>-</p></div>
+                                <div><p>{productChoseQuantity}</p></div>
+                                <div onClick={handleIncreaseProductQuantity} className="w-[30px] h-[30px] select-none p-[10px] flex justify-center items-center rounded-full bg-black cursor-pointer"><p className='text-white cursor-pointer'>+</p></div>
                             </div>
                         </div>
                         <div className="mt-[20px]">
-                            <p className='text-[30px] uppercase'>$ 40</p>
+                            <p className='text-[30px] uppercase'>$ {productPrice * productChoseQuantity}</p>
                             <div className='mt-[10px]'>
                                 <Button buttonText='Add To Cart' buttonBG='bg-black' buttonTextColor='text-white' />
                             </div>

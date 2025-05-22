@@ -6,7 +6,8 @@ import Input from '../components/atoms/Input'
 
 const AllListings = () => {
     const [productCategory, setProductCategory] = useState('shirts')
-    const [productPrice, setProductPrice] = useState(40)
+    const [productPrice, setProductPrice] = useState(50)
+    const [applyFilters, setApplyFilters] = useState(false);
 
     const products = [
         {
@@ -20,7 +21,7 @@ const AllListings = () => {
         }
     ]
 
-    const filteredProducts = products.filter((filteredProduct) => {
+    const filteredProducts = applyFilters ? products.filter((filteredProduct) => {
         let minPrice = 0;
         let maxPrice = productPrice;
 
@@ -36,7 +37,17 @@ const AllListings = () => {
             filteredProduct.productPrice >= minPrice &&
             filteredProduct.productPrice <= maxPrice
         )
-    })
+    }) : products;
+
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setProductCategory(e.target.value);
+        setApplyFilters(true);
+    };
+
+    const handlePriceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setProductPrice(parseInt(e.target.value, 10));
+        setApplyFilters(true);
+    };
 
     return (
         <div>
@@ -46,8 +57,8 @@ const AllListings = () => {
                 <div className='flex flex-row items-center justify-between mt-[10px]'>
                     <div className='flex space-x-[10px] items-center flex-row'>
                         <Input  inputType='text' inputPlaceholder="Search" />
-                        <Select handleSelectChange={(e) => {setProductCategory(e.target.value)}} selectOptionTerm="Sort by category" options={['Pants', 'Shirts', 'Dresses', 'Coats', 'Others']} />
-                        <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {setProductPrice(parseInt(e.target.value, 10))}} className='outline-0 border-[1px] border-solid border-gray-400 pl-[20px] pt-[10px] pb-[10px] pr-[20px] rounded-full'>
+                        <Select handleSelectChange={handleCategoryChange} selectOptionTerm="Sort by category" options={['Pants', 'Shirts', 'Dresses', 'Coats', 'Others']} />
+                        <select onChange={handlePriceChange} className='outline-0 border-[1px] border-solid border-gray-400 pl-[20px] pt-[10px] pb-[10px] pr-[20px] rounded-full'>
                             <option className='text-[14px] font-afacadFlux' value={0}>Sort by price</option>
                             <option className='text-[14px] font-afacadFlux' value={50}>$0 - $50</option>
                             <option className='text-[14px] font-afacadFlux' value={100}>$50 - $100</option>
