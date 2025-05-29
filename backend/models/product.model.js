@@ -24,6 +24,10 @@ const Product = sequelize.define('Product', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    amountInStock: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false,

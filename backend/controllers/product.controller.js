@@ -2,10 +2,10 @@ import Product from '../models/product.model.js'
 
 export const createProduct = async (req, res) => {
     try {
-        const { productName, productImage, productDescription, productPrice } = req.body
+        const { productName, productImage, amountInStock, productDescription, productPrice } = req.body
         const userId = req.user.userId;
 
-        const product = await Product.create({ productName, productImage, productDescription, productPrice, userId })
+        const product = await Product.create({ productName, productImage, amountInStock, productDescription, productPrice, userId })
 
         res.status(201).json({
             message: "Product added",
