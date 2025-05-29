@@ -3,7 +3,7 @@ import React from 'react'
 interface InputTypesProps {
     inputPlaceholder: string;
     inputType: string;
-    value?: string;
+    value?: string | number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
