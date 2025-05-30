@@ -2,18 +2,19 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 interface ProductCardTypesProps {
-    productID?: string;
+    productID?: string | number;
     productName: string;
     productPrice: number;
     productDescription: string;
+    productImage?: string;
 }
 
-const ProductCard: React.FC<ProductCardTypesProps> = ({ productID, productName, productPrice, productDescription }) => {
+const ProductCard: React.FC<ProductCardTypesProps> = ({ productID, productName, productImage, productPrice, productDescription }) => {
     return (
         <div>
             <Link to={`/all/${productID}`}>
                 <div className="rounded-[12px] h-[250px] shadow-sm bg-gray-400 cursor-pointer">
-                    <img src='/images/shirt.png' className='w-full h-full object-center object-cover rounded-[12px]' alt='cloth' />
+                    <img src={productImage} className='w-full h-full object-center object-cover rounded-[12px]' alt='cloth' />
                 </div>
             </Link>
             <Link to={`/all/${productID}`}>
