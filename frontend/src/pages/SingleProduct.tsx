@@ -3,17 +3,48 @@ import Navigation from "../components/Navigation"
 import Footer from "../components/Footer"
 import Button from "../components/atoms/Button"
 import ProductCard from "../components/atoms/ProductCard"
+import { useProductStore } from '../store/useProductStore'
+import { useParams } from 'react-router-dom'
+
+interface ProductTypes {
+    id: number;
+    productName: string;
+    productPrice: number;
+    amountInStock: number;
+    productDescription: string;
+    productImage: string;
+    productCategory: string;
+}
 
 
 const SingleProduct = () => {
     const [productChoseQuantity, setProductChoseQuantity] = useState(1)
     const [isQuantityLessThanOne, setIsQuantityLessThanOne] = useState(false)
+    const { fetchProduct, currentlySelectedProduct, addProductToCart } = useProductStore()
+    const [fetchedProduct, setFetchedProduct ] = useState<ProductTypes>()
+    const { id } = useParams()
+
 
     useEffect(() => {
         if (productChoseQuantity <= 1) {
             setIsQuantityLessThanOne(true)
         }
     }, [productChoseQuantity])
+
+    const handleFetchProduct = async (id: number) => {
+        try {
+            await fetchProduct(id)
+            setFetchedProduct(currentlySelectedProduct)
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        handleFetchProduct(id)
+    }, [])
+
+    console.log(`fetched product ${fetchedProduct}`)
 
     const products = [
         {
@@ -65,11 +96,11 @@ const SingleProduct = () => {
                     <div className="w-[50%]">
                         <p className="text-gray-600">Nike / Running Shoes</p>
                         <div className='mt-[10px]'>
-                            <p className='font-bold text-[30px]'>Nike Air Force</p>
+                            <p className='font-bold text-[30px]'>{fetchedProduct?.productName}</p>
                         </div>
                         <div>
                             <p className="text-gray-600 text-[18px]">Product Description</p>
-                            <p className="text-gray-400">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae ratione non dicta eius, quos voluptatum, cumque doloremque, accusantium dolorem distinctio accusamus quod optio omnis esse aspernatur possimus quidem? Cumque fugiat incidunt nam enim voluptatum possimus repellendus ratione. Debitis, quidem. Consequatur dolores libero neque vel illum nostrum blanditiis sunt veritatis dolorum!</p>
+                            <p className="text-gray-400">{fetchedProduct?.productDescription}</p>
                         </div>
                         <div>
                             <p className="text-gray-600 text-[18px]">Quantity</p>
@@ -80,9 +111,9 @@ const SingleProduct = () => {
                             </div>
                         </div>
                         <div className="mt-[20px]">
-                            <p className='text-[30px] uppercase'>$ {productPrice * productChoseQuantity}</p>
+                            <p className='text-[30px] uppercase'>$ {fetchedProduct?.productPrice * productChoseQuantity}</p>
                             <div className='mt-[10px]'>
-                                <Button buttonText='Add To Cart' buttonBG='bg-black' buttonTextColor='text-white' />
+                                <Button buttonText='Add To Cart' onClick={() => addProductToCart(fetchedProduct)} buttonBG='bg-black' buttonTextColor='text-white' />
                             </div>
                         </div>
                     </div>
@@ -98,7 +129,7 @@ const SingleProduct = () => {
                         : 
                             <div className='grid grid-cols-4 gap-4'>
                                 {filteredProducts.map((product) => (
-                                    <ProductCard key={product.productID} productID={product.productID} productName={product.productName} productPrice={product.productPrice} productDescription={product.productDescription} />
+                                    <ProductCard key={product.productID} productImage={'https://images.pexels.com/photos/4197905/pexels-photo-4197905.jpeg'} productID={product.productID} productName={product.productName} productPrice={product.productPrice} productDescription={product.productDescription} />
                                 ))}
                             </div>
                         }

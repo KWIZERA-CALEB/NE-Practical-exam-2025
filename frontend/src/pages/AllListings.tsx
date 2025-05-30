@@ -1,27 +1,46 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navigation from "../components/Navigation"
 import ProductCard from "../components/atoms/ProductCard"
 import Select from '../components/atoms/Select'
 import Input from '../components/atoms/Input'
+import { useProductStore } from "../store/useProductStore"
+
+interface ProductsTypes {
+    id: number;
+    productName: string;
+    productPrice: number;
+    amountInStock: number;
+    productDescription: string;
+    productImage: string;
+    productCategory: string;    
+}
+
 
 const AllListings = () => {
     const [productCategory, setProductCategory] = useState('shirts')
     const [productPrice, setProductPrice] = useState(50)
     const [applyFilters, setApplyFilters] = useState(false);
-
-    const products = [
-        {
-            "productID": "SGhdj7368",
-            "productName": "Lora Piana",
-            "productDescription": "Slim-fit shirt with stripes.",
-            "productPrice": 45,
-            "productColor": "red",
-            "productSpecifiedGender": "male",
-            "productCategory": "shirts"
+    const { fetchProducts, isFetchingProducts, productsFetched } = useProductStore()
+    const [products, setProducts] = useState<ProductsTypes[]>([])
+    
+    const handleFetchProducts = async () => {
+        try {
+            await fetchProducts()
+            setProducts(productsFetched || []);
+        } catch(error) {
+            console.log(error)
         }
-    ]
+    }
 
-    const filteredProducts = applyFilters ? products.filter((filteredProduct) => {
+
+    useEffect(() => {
+        handleFetchProducts()
+        console.log(products)
+    }, [])
+
+    
+
+    const filteredProducts: ProductsTypes[] = applyFilters ? products.filter((filteredProduct) => {
         let minPrice = 0;
         let maxPrice = productPrice;
 
@@ -37,6 +56,7 @@ const AllListings = () => {
             filteredProduct.productPrice >= minPrice &&
             filteredProduct.productPrice <= maxPrice
         )
+
     }) : products;
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -70,14 +90,19 @@ const AllListings = () => {
                 </div>
             </div>
             <div className='pr-[40px] mt-[15px] pl-[40px]'>
+                {isFetchingProducts && 
+                    <div>
+                        <p>Loading ...</p>
+                    </div>
+                }
                 {filteredProducts.length == 0 ? 
                     <div>
-                        <p className='text-center'>No Clothings</p>
+                        <p className='text-center'>No Products</p>
                     </div>
                 : 
                     <div className='grid grid-cols-4 gap-4'>
-                        {filteredProducts.map((product) => (
-                            <ProductCard key={product.productID} productID={product.productID} productName={product.productName} productPrice={product.productPrice} productDescription={product.productDescription} />
+                        {products.map((product) => (
+                            <ProductCard key={product.id} productImage={product.productImage} productID={product.id} productName={product.productName} productPrice={product.productPrice} productDescription={product.productDescription} />
                         ))}
                     </div>
                 }
